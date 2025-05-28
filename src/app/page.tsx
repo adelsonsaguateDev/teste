@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     if (codigo === '12345') {
       login(codigo)
-      router.push('/mapa')
+      router.push('/home')
     } else {
       alert('Código inválido! Verifique e tente novamente.')
     }
