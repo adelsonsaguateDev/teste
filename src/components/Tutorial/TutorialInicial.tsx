@@ -10,7 +10,7 @@ const passos = [
   },
   {
     titulo: 'Localização da Sala',
-    descricao: 'Podes ver no mapa onde será realizada a tua prova.',
+    descricao: 'Podes ver no mapa onde será realizada o teu exame.',
   },
   {
     titulo: 'Simples e Acessível',
