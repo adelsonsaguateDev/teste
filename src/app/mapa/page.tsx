@@ -1,16 +1,17 @@
-'use client'
+'use client';
 
+import LayoutInterno from '@/components/Layout/LayoutInterno'
 import dynamic from 'next/dynamic'
 import 'leaflet/dist/leaflet.css'
 
-const Mapa = dynamic(() => import('@/components/Mapa/Mapa'), {
+const MapaPesquisaDinamica = dynamic(() => import('@/components/Mapa/MapaPesquisaDinamica'), {
   ssr: false,
 })
 
 export default function PaginaMapa() {
   return (
-    <div className="h-screen">
-      <Mapa />
-    </div>
+    <LayoutInterno>
+      <MapaPesquisaDinamica />
+    </LayoutInterno>
   )
 }
