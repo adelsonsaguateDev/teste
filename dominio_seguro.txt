@@ -1,0 +1,11 @@
+Comando para gerar link seguro:
+Definir o token depois de aceder na palataforma do https://dashboard.ngrok.com/get-started/setup/windows
+ngrok config add-authtoken 1h23abcdEfGh456IJklMn7opQRsTu89vwXyZ
+
+
+Comando para instalaro pacote:
+npm install -g ngrok
+
+
+Comando para o link seguro:
+ngrok http 3000
