@@ -141,7 +141,7 @@ export default function HomePage() {
                             <motion.button
                                 whileHover={{ scale: 1.05, y: -5 }}
                                 whileTap={{ scale: 0.95 }}
-                                onClick={() => alert('Esta funcionalidade estará disponível em breve.')}
+                                onClick={() => router.push('/detalhe')}
                                 className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
