@@ -1,13 +1,13 @@
 'use client'
 
-import { ReactNode } from 'react'
-import Navbar from './Navbar'
+import NavbarMobile from '@/components/Layout/NavbarMobileDrawer'
 
-export default function LayoutInterno({ children }: { children: ReactNode }) {
+export default function LayoutInterno({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-h-screen flex flex-col bg-blue-50">
-            <Navbar />
-            <main className="flex-grow p-4">{children}</main>
+        <div className="relative min-h-screen bg-blue-50">
+            <NavbarMobile />
+            {/* Removido o pt-4 para permitir que o conteúdo ocupe toda a tela */}
+            <main className="relative z-10">{children}</main>
         </div>
     )
 }
