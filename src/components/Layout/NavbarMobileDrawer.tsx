@@ -68,7 +68,7 @@ export default function NavbarMobile() {
                     </button>
 
                     <button
-                        onClick={() => navegar('/detalhes')}
+                        onClick={() => navegar('/detalhe')}
                         className="flex items-center gap-4 text-blue-800 hover:text-blue-900 hover:bg-blue-50 p-4 rounded-xl transition-all duration-200"
                     >
                         <Info className="w-5 h-5" />
