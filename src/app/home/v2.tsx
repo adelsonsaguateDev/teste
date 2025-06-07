@@ -1,20 +1,52 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LogOut, MapPin, FileText, User, Calendar, Clock, Shield, Phone, Mail, ExternalLink, ChevronRight, AlertTriangle, CheckCircle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
-import TutorialInicial from '@/components/Tutorial/TutorialInicial'
-import LayoutInterno from '@/components/Layout/LayoutInterno'
+import { LogOut, MapPin, FileText, User, Calendar, Clock, Shield, Phone, Mail, ExternalLink, ChevronRight, AlertTriangle, CheckCircle, ArrowLeft, Home, Menu, X } from 'lucide-react'
+
+// Tipos TypeScript
+interface TutorialProps {
+    onFechar: () => void;
+}
+
+interface LayoutProps {
+    children: React.ReactNode;
+}
+
+// Simulando os hooks personalizados
+const useAuth = () => ({
+    codigo: '12345',
+    logout: () => console.log('Logout realizado')
+})
+
+const TutorialInicial = ({ onFechar }: TutorialProps) => (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Tutorial Inicial</h3>
+            <p className="text-gray-600 mb-6">Bem-vindo ao Portal do Candidato! Aqui você encontra todas as informações necessárias para o seu exame.</p>
+            <button
+                onClick={onFechar}
+                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                Entendi
+            </button>
+        </div>
+    </div>
+)
+
+const LayoutInterno = ({ children }: LayoutProps) => <div className="min-h-screen">{children}</div>
 
 export default function HomePage() {
     const { codigo, logout } = useAuth()
     const [mostrarTutorial, setMostrarTutorial] = useState(false)
     const [tempoSessao, setTempoSessao] = useState(30) // minutos restantes
-    const router = useRouter()
+    const [menuMobileAberto, setMenuMobileAberto] = useState(false)
 
+    // Função para navegar entre páginas (simulação)
     const navegarPara = (pagina: string) => {
-        router.push(pagina)
+        console.log(`Navegando para: ${pagina}`)
+        // Aqui você implementaria a navegação real
+        // Por exemplo: window.location.href = pagina
+        alert(`Navegando para: ${pagina}`)
     }
 
     useEffect(() => {
@@ -32,7 +64,7 @@ export default function HomePage() {
     const handleLogout = () => {
         if (confirm('Tem certeza que deseja sair do portal?')) {
             logout()
-            router.push('/')
+            navegarPara('/')
         }
     }
 
@@ -44,6 +76,128 @@ export default function HomePage() {
                     localStorage?.setItem('tutorial_visto', 'true')
                 }} />
             )}
+
+            {/* Barra de Navegação Principal */}
+            <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex justify-between items-center h-16">
+                        {/* Logo e título */}
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-blue-600 rounded-lg p-1.5">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="/logo_up.png"
+                                    alt="UP Logo"
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                            <div>
+                                <h1 className="text-lg font-bold text-gray-800">Portal do Candidato</h1>
+                                <p className="text-xs text-gray-500">Universidade Pedagógica</p>
+                            </div>
+                        </div>
+
+                        {/* Menu desktop */}
+                        <div className="hidden md:flex items-center space-x-6">
+                            <button
+                                onClick={() => navegarPara('/home')}
+                                className="flex items-center gap-2 px-3 py-2 text-blue-600 bg-blue-50 rounded-lg font-medium"
+                            >
+                                <Home className="w-4 h-4" />
+                                <span>Início</span>
+                            </button>
+                            <button
+                                onClick={() => navegarPara('/mapa')}
+                                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                                <MapPin className="w-4 h-4" />
+                                <span>Mapa</span>
+                            </button>
+                            <button
+                                onClick={() => navegarPara('/detalhe')}
+                                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                                <FileText className="w-4 h-4" />
+                                <span>Detalhes</span>
+                            </button>
+
+                            {/* Informações do usuário */}
+                            <div className="flex items-center gap-3 pl-6 border-l border-gray-200">
+                                <div className="text-right">
+                                    <p className="text-sm font-medium text-gray-800">{codigo}</p>
+                                    <p className="text-xs text-gray-500">Candidato</p>
+                                </div>
+                                <button
+                                    onClick={handleLogout}
+                                    className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                                    title="Sair do portal"
+                                >
+                                    <LogOut className="w-5 h-5" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Botão menu mobile */}
+                        <button
+                            onClick={() => setMenuMobileAberto(!menuMobileAberto)}
+                            className="md:hidden p-2 text-gray-600"
+                        >
+                            {menuMobileAberto ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
+                    </div>
+
+                    {/* Menu mobile */}
+                    {menuMobileAberto && (
+                        <div className="md:hidden border-t border-gray-200 py-4 space-y-2">
+                            <button
+                                onClick={() => {
+                                    navegarPara('/home')
+                                    setMenuMobileAberto(false)
+                                }}
+                                className="flex items-center gap-3 w-full px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium"
+                            >
+                                <Home className="w-5 h-5" />
+                                <span>Início</span>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    navegarPara('/mapa')
+                                    setMenuMobileAberto(false)
+                                }}
+                                className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+                            >
+                                <MapPin className="w-5 h-5" />
+                                <span>Localização da Sala</span>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    navegarPara('/detalhe')
+                                    setMenuMobileAberto(false)
+                                }}
+                                className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+                            >
+                                <FileText className="w-5 h-5" />
+                                <span>Detalhes do Exame</span>
+                            </button>
+                            <div className="border-t border-gray-200 pt-4 mt-4">
+                                <div className="flex items-center justify-between px-4 py-2">
+                                    <div>
+                                        <p className="font-medium text-gray-800">Código: {codigo}</p>
+                                        <p className="text-sm text-gray-500">Status: Ativo</p>
+                                    </div>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg"
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                        <span>Sair</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </nav>
 
             {/* Cabeçalho de Segurança e Status */}
             <div className="bg-blue-900 text-white py-2 px-4">

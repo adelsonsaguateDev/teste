@@ -1,21 +1,39 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LogOut, MapPin, FileText, User, Calendar, Clock, Shield, Phone, Mail, ExternalLink, ChevronRight, AlertTriangle, CheckCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
-import TutorialInicial from '@/components/Tutorial/TutorialInicial'
-import LayoutInterno from '@/components/Layout/LayoutInterno'
+import { LogOut, MapPin, FileText, User, Calendar, Clock, Shield, Phone, Mail, ExternalLink, ChevronRight, AlertTriangle, CheckCircle } from 'lucide-react'
+import Image from 'next/image'
+
+
+// Simulando os hooks personalizados
+const useAuth = () => ({
+    codigo: '12345',
+    logout: () => console.log('Logout realizado')
+})
+
+const TutorialInicial = ({ onFechar }) => (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Tutorial Inicial</h3>
+            <p className="text-gray-600 mb-6">Bem-vindo ao Portal do Candidato! Aqui você encontra todas as informações necessárias para o seu exame.</p>
+            <button
+                onClick={onFechar}
+                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                Entendi
+            </button>
+        </div>
+    </div>
+)
+
+const LayoutInterno = ({ children }) => <div className="min-h-screen">{children}</div>
 
 export default function HomePage() {
     const { codigo, logout } = useAuth()
+    const router = useRouter()
     const [mostrarTutorial, setMostrarTutorial] = useState(false)
     const [tempoSessao, setTempoSessao] = useState(30) // minutos restantes
-    const router = useRouter()
-
-    const navegarPara = (pagina: string) => {
-        router.push(pagina)
-    }
 
     useEffect(() => {
         const visto = localStorage?.getItem('tutorial_visto')
@@ -77,25 +95,26 @@ export default function HomePage() {
                             {/* Logo da UP */}
                             <div className="flex items-center gap-4">
                                 <div className="w-16 h-16 bg-white rounded-xl p-2 shadow-lg">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
+                                    <Image
                                         src="/logo_up.png"
+                                        width={400}
+                                        height={400}
                                         alt="Logo da Universidade Pedagógica de Maputo"
                                         className="w-full h-full object-contain"
                                     />
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl lg:text-3xl font-bold">Portal do Candidato</h2>
+                                    <h1 className="text-2xl lg:text-3xl font-bold">Portal do Candidato</h1>
                                     <p className="text-blue-200">Universidade Pedagógica de Maputo</p>
                                 </div>
                             </div>
 
                             {/* Mensagem de boas-vindas */}
                             <div className="space-y-4">
-                                <h3 className="text-3xl lg:text-5xl font-bold leading-tight">
+                                <h2 className="text-3xl lg:text-5xl font-bold leading-tight">
                                     Bem-vindo ao seu<br />
                                     <span className="text-yellow-300">espaço pessoal</span>
-                                </h3>
+                                </h2>
                                 <p className="text-xl text-blue-100 leading-relaxed">
                                     Acesse todas as informações necessárias para o seu exame de admissão
                                     de forma rápida e segura.
@@ -106,7 +125,7 @@ export default function HomePage() {
                             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
                                 <div className="flex items-center gap-4 mb-4">
                                     <User className="w-6 h-6 text-yellow-300" />
-                                    <h4 className="text-lg font-semibold">Seus Dados</h4>
+                                    <h3 className="text-lg font-semibold">Seus Dados</h3>
                                 </div>
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <div>
@@ -132,7 +151,7 @@ export default function HomePage() {
                                         <Calendar className="w-16 h-16 text-yellow-300" />
                                     </div>
                                     <div>
-                                        <h5 className="text-2xl font-bold mb-2">Pronto para o Exame?</h5>
+                                        <h3 className="text-2xl font-bold mb-2">Pronto para o Exame?</h3>
                                         <p className="text-blue-200">
                                             Encontre sua sala e consulte os detalhes importantes
                                         </p>
@@ -174,7 +193,7 @@ export default function HomePage() {
                                     e instruções passo a passo.
                                 </p>
                                 <button
-                                    onClick={() => navegarPara('/mapa')}
+                                    onClick={() => router.push('/mapa')}
                                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
                                     aria-label="Acessar mapa da sala de exame"
                                 >
@@ -199,7 +218,7 @@ export default function HomePage() {
                                     e outras informações importantes.
                                 </p>
                                 <button
-                                    onClick={() => navegarPara('/detalhe')}
+                                    onClick={() => router.push('/detalhe')}
                                     className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
                                     aria-label="Ver detalhes do exame"
                                 >
@@ -311,10 +330,11 @@ export default function HomePage() {
                         <div>
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 bg-white rounded-lg p-1">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
+                                    <Image
                                         src="/logo_up.png"
-                                        alt="UP Logo"
+                                        width={400}
+                                        height={400}
+                                        alt="Logo da Universidade Pedagógica de Maputo"
                                         className="w-full h-full object-contain"
                                     />
                                 </div>
