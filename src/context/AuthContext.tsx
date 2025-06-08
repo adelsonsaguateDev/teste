@@ -35,11 +35,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             timerRef.current = null
         }
 
-        // Limpar qualquer dado do localStorage se necessário
-        if (typeof window !== 'undefined') {
-            localStorage.removeItem('tutorial_visto') // opcional
-        }
-
         // Redirecionar para login usando setTimeout para evitar erro
         setTimeout(() => {
             router.push('/')
