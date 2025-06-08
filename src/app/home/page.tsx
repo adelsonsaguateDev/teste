@@ -30,10 +30,8 @@ export default function HomePage() {
     }, [])
 
     const handleLogout = () => {
-        if (confirm('Tem certeza que deseja sair do portal?')) {
-            logout()
-            router.push('/')
-        }
+        logout()
+        router.push('/')
     }
 
     return (

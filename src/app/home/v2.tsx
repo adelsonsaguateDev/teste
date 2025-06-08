@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LogOut, MapPin, FileText, User, Calendar, Clock, Shield, Phone, Mail, ExternalLink, ChevronRight, AlertTriangle, CheckCircle, ArrowLeft, Home, Menu, X } from 'lucide-react'
+import { LogOut, MapPin, FileText, User, Calendar, Clock, Shield, Phone, Mail, ExternalLink, ChevronRight, AlertTriangle, CheckCircle, Home, Menu, X } from 'lucide-react'
 
 // Tipos TypeScript
 interface TutorialProps {
