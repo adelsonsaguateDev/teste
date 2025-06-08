@@ -8,9 +8,8 @@ import TutorialInicial from '@/components/Tutorial/TutorialInicial'
 import LayoutInterno from '@/components/Layout/LayoutInterno'
 
 export default function HomePage() {
-    const { codigo, logout } = useAuth()
+    const { codigo, logout, tempoSessao } = useAuth()
     const [mostrarTutorial, setMostrarTutorial] = useState(false)
-    const [tempoSessao, setTempoSessao] = useState(1) // minutos restantes
     const router = useRouter()
 
     const navegarPara = (pagina: string) => {
@@ -20,27 +19,11 @@ export default function HomePage() {
     useEffect(() => {
         const visto = localStorage?.getItem('tutorial_visto')
         if (!visto) setMostrarTutorial(true)
-
-        // Timer de segurança da sessão
-        const timer = setInterval(() => {
-            setTempoSessao(prev => prev > 0 ? prev - 1 : 0)
-        }, 60000)
-
-
-        return () => clearInterval(timer)
     }, [])
 
     const handleLogout = () => {
-        logout()
+        logout() // O AuthContext já cuida do redirecionamento
     }
-
-
-    if (tempoSessao == 0) {
-        handleLogout()
-    }
-
-
-
 
     return (
         <LayoutInterno>
@@ -58,7 +41,12 @@ export default function HomePage() {
                         <Shield className="w-4 h-4 text-green-400" />
                         <span>Conexão Segura</span>
                         <span className="text-blue-300">•</span>
-                        <span>Sessão expira em: {tempoSessao}min</span>
+                        <span className={`${tempoSessao <= 5 ? 'text-yellow-300 font-bold' : ''}`}>
+                            Sessão expira em: {tempoSessao}min
+                        </span>
+                        {tempoSessao <= 5 && (
+                            <span className="text-yellow-300">⚠️</span>
+                        )}
                     </div>
                     <div className="flex items-center gap-4">
                         <span>Suporte: candidatos@up.ac.mz</span>
@@ -67,6 +55,21 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
+
+            {/* Aviso de sessão prestes a expirar */}
+            {tempoSessao <= 5 && tempoSessao > 0 && (
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                    <div className="flex items-center max-w-7xl mx-auto">
+                        <AlertTriangle className="w-5 h-5 text-yellow-400 mr-3" />
+                        <div className="flex-1">
+                            <p className="text-yellow-800">
+                                <strong>Atenção!</strong> Sua sessão expirará em {tempoSessao} minuto{tempoSessao !== 1 ? 's' : ''}.
+                                Continue navegando para manter-se conectado.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Header Principal */}
             <header className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
