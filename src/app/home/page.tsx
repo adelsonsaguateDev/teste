@@ -10,7 +10,7 @@ import LayoutInterno from '@/components/Layout/LayoutInterno'
 export default function HomePage() {
     const { codigo, logout } = useAuth()
     const [mostrarTutorial, setMostrarTutorial] = useState(false)
-    const [tempoSessao, setTempoSessao] = useState(30) // minutos restantes
+    const [tempoSessao, setTempoSessao] = useState(1) // minutos restantes
     const router = useRouter()
 
     const navegarPara = (pagina: string) => {
@@ -26,13 +26,21 @@ export default function HomePage() {
             setTempoSessao(prev => prev > 0 ? prev - 1 : 0)
         }, 60000)
 
+
         return () => clearInterval(timer)
     }, [])
 
     const handleLogout = () => {
         logout()
-        router.push('/')
     }
+
+
+    if (tempoSessao == 0) {
+        handleLogout()
+    }
+
+
+
 
     return (
         <LayoutInterno>

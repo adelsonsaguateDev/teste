@@ -1,6 +1,8 @@
 'use client'
 
 import { createContext, useContext, useState, ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+
 
 interface AuthContextProps {
     isAuthenticated: boolean
@@ -14,6 +16,8 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [codigo, setCodigo] = useState('')
+    const router = useRouter()
+
 
     const login = (codigo: string) => {
         setCodigo(codigo)
@@ -23,6 +27,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logout = () => {
         setCodigo('')
         setIsAuthenticated(false)
+        router.push('/')
+
     }
 
     return (
