@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Menu, X, Home, MapPin, FileText, LogOut } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 
-export default function NavbarMobileDrawer() {
+export default function NavbarPureTailwind() {
     const [menuMobileAberto, setMenuMobileAberto] = useState(false)
     const router = useRouter()
+    const pathname = usePathname()
     const { codigo, logout } = useAuth()
 
     const navegarPara = (pagina: string) => {
@@ -19,8 +20,71 @@ export default function NavbarMobileDrawer() {
         router.push('/')
     }
 
+    // Função para obter classes específicas com active
+    const getMenuClasses = (menuClass: string, targetPath: string) => {
+        const baseClasses = `${menuClass} flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 relative`
+        const activeClasses = "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform -translate-y-0.5"
+        const inactiveClasses = "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+
+        return pathname === targetPath
+            ? `${baseClasses} ${activeClasses} active`
+            : `${baseClasses} ${inactiveClasses}`
+    }
+
+    const getMobileMenuClasses = (menuClass: string, targetPath: string) => {
+        const baseClasses = `${menuClass} flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all duration-200 relative`
+        const activeClasses = "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
+        const inactiveClasses = "text-gray-600 hover:bg-gray-50"
+
+        return pathname === targetPath
+            ? `${baseClasses} ${activeClasses} active`
+            : `${baseClasses} ${inactiveClasses}`
+    }
+
+    const getIconClasses = (targetPath: string) => {
+        return pathname === targetPath
+            ? "w-4 h-4 text-yellow-300"
+            : "w-4 h-4"
+    }
+
+    const getMobileIconClasses = (targetPath: string) => {
+        return pathname === targetPath
+            ? "w-5 h-5 text-yellow-300"
+            : "w-5 h-5"
+    }
+
     return (
         <>
+            {/* Estilos CSS personalizados para indicadores */}
+            <style jsx>{`
+                .active::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 70%;
+                    height: 3px;
+                    background: #fbbf24;
+                    border-radius: 2px 2px 0 0;
+                }
+                
+                /* Para mobile */
+                @media (max-width: 768px) {
+                    .active::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 4px;
+                        height: 70%;
+                        background: #fbbf24;
+                        border-radius: 0 4px 4px 0;
+                    }
+                }
+            `}</style>
+
             {/* Barra de Navegação Principal */}
             <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4">
@@ -45,24 +109,26 @@ export default function NavbarMobileDrawer() {
                         <div className="hidden md:flex items-center space-x-6">
                             <button
                                 onClick={() => navegarPara('/home')}
-                                className="flex items-center gap-2 px-3 py-2 text-blue-600 bg-blue-50 rounded-lg font-medium"
+                                className={getMenuClasses('home-menu', '/home')}
                             >
-                                <Home className="w-4 h-4" />
-                                <span>Início</span>
+                                <Home className={getIconClasses('/home')} />
+                                <span className="font-medium">Início</span>
                             </button>
+
                             <button
                                 onClick={() => navegarPara('/mapa')}
-                                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                className={getMenuClasses('mapa-menu', '/mapa')}
                             >
-                                <MapPin className="w-4 h-4" />
-                                <span>Mapa</span>
+                                <MapPin className={getIconClasses('/mapa')} />
+                                <span className="font-medium">Mapa</span>
                             </button>
+
                             <button
                                 onClick={() => navegarPara('/detalhe')}
-                                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                className={getMenuClasses('detalhe-menu', '/detalhe')}
                             >
-                                <FileText className="w-4 h-4" />
-                                <span>Detalhes</span>
+                                <FileText className={getIconClasses('/detalhe')} />
+                                <span className="font-medium">Detalhes</span>
                             </button>
 
                             {/* Informações do usuário */}
@@ -73,7 +139,7 @@ export default function NavbarMobileDrawer() {
                                 </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                     title="Sair do portal"
                                 >
                                     <LogOut className="w-5 h-5" />
@@ -84,13 +150,13 @@ export default function NavbarMobileDrawer() {
                         {/* Botão menu mobile */}
                         <button
                             onClick={() => setMenuMobileAberto(!menuMobileAberto)}
-                            className="md:hidden p-2 text-gray-600"
+                            className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                         >
                             {menuMobileAberto ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
                     </div>
 
-                    {/* Menu mobile dropdown (dentro da navbar) */}
+                    {/* Menu mobile dropdown */}
                     {menuMobileAberto && (
                         <div className="md:hidden border-t border-gray-200 py-4 space-y-2">
                             <button
@@ -98,31 +164,34 @@ export default function NavbarMobileDrawer() {
                                     navegarPara('/home')
                                     setMenuMobileAberto(false)
                                 }}
-                                className="flex items-center gap-3 w-full px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium"
+                                className={getMobileMenuClasses('home-menu', '/home')}
                             >
-                                <Home className="w-5 h-5" />
-                                <span>Início</span>
+                                <Home className={getMobileIconClasses('/home')} />
+                                <span className="font-medium">Início</span>
                             </button>
+
                             <button
                                 onClick={() => {
                                     navegarPara('/mapa')
                                     setMenuMobileAberto(false)
                                 }}
-                                className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+                                className={getMobileMenuClasses('mapa-menu', '/mapa')}
                             >
-                                <MapPin className="w-5 h-5" />
-                                <span>Localização da Sala</span>
+                                <MapPin className={getMobileIconClasses('/mapa')} />
+                                <span className="font-medium">Localização da Sala</span>
                             </button>
+
                             <button
                                 onClick={() => {
                                     navegarPara('/detalhe')
                                     setMenuMobileAberto(false)
                                 }}
-                                className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+                                className={getMobileMenuClasses('detalhe-menu', '/detalhe')}
                             >
-                                <FileText className="w-5 h-5" />
-                                <span>Detalhes do Exame</span>
+                                <FileText className={getMobileIconClasses('/detalhe')} />
+                                <span className="font-medium">Detalhes do Exame</span>
                             </button>
+
                             <div className="border-t border-gray-200 pt-4 mt-4">
                                 <div className="flex items-center justify-between px-4 py-2">
                                     <div>
@@ -134,7 +203,7 @@ export default function NavbarMobileDrawer() {
                                             setMenuMobileAberto(false)
                                             handleLogout()
                                         }}
-                                        className="flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg"
+                                        className="flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                     >
                                         <LogOut className="w-4 h-4" />
                                         <span>Sair</span>
