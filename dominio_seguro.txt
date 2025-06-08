@@ -9,3 +9,126 @@ npm install -g ngrok
 
 Comando para o link seguro:
 ngrok http 3000
+
+
+
+MAPS INSTRUÇÕES
+
+// Instruções para configuração do Google Maps no projeto
+
+// 1. INSTALAR DEPENDÊNCIAS
+// npm install @react-google-maps/api
+
+// 2. CRIAR ARQUIVO .env.local NA RAIZ DO PROJETO
+/*
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSyAs5vmPVTbTnnz8QR_oSuhlSS-0RRf_LwY
+*/
+
+// 3. ATUALIZAR next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  env: {
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  },
+  // Configurações adicionais para o Google Maps
+  images: {
+    domains: ['maps.googleapis.com', 'maps.gstatic.com'],
+  },
+};
+
+module.exports = nextConfig;
+
+// 4. ESTRUTURA DE PASTAS RECOMENDADA
+/*
+src/
+├── components/
+│   └── Mapa/
+│       ├── MapaGoogleMaps.tsx (componente principal)
+│       └── index.ts (exports)
+├── app/
+│   └── mapa/
+│       └── page.tsx (página do mapa)
+└── context/
+    └── AuthContext.tsx (já existente)
+*/
+
+// 5. CONFIGURAR GOOGLE CLOUD CONSOLE (OPCIONAL - para produção)
+/*
+1. Acesse: https://console.cloud.google.com/
+2. Crie um novo projeto ou selecione um existente
+3. Ative as seguintes APIs:
+   - Maps JavaScript API
+   - Places API (opcional)
+   - Directions API
+   - Geocoding API (opcional)
+4. Crie uma chave de API
+5. Configure restrições:
+   - Restrições de aplicativo: HTTP referrers
+   - Adicione: localhost:3000, seudominio.com
+6. Substitua a chave no .env.local
+*/
+
+// 6. EXEMPLO DE USO BÁSICO
+/*
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+
+const MapaSimples = () => {
+  return (
+    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '400px' }}
+        center={{ lat: -25.9658, lng: 32.5834 }}
+        zoom={15}
+      >
+        <Marker position={{ lat: -25.9658, lng: 32.5834 }} />
+      </GoogleMap>
+    </LoadScript>
+  )
+}
+*/
+
+// 7. PRINCIPAIS FUNCIONALIDADES IMPLEMENTADAS
+/*
+✅ Localização atual do usuário
+✅ Marcadores personalizados para salas
+✅ InfoWindows com detalhes das salas
+✅ Cálculo de rotas (Directions API)
+✅ Pesquisa por código do candidato
+✅ Auto-busca baseada no código do usuário logado
+✅ Distância e tempo estimado de caminhada
+✅ Interface responsiva
+✅ Loading states e error handling
+✅ Botões de ação flutuantes (WhatsApp, Telefone)
+✅ Painel de informações
+*/
+
+// 8. TIPOS TYPESCRIPT INCLUÍDOS
+interface SalaExame {
+  codigoCandidato: string
+  nome: string
+  lat: number
+  lng: number
+  bloco: string
+  horario: string
+  disciplina: string
+  endereco?: string
+}
+
+// 9. CUSTOMIZAÇÕES VISUAIS
+/*
+- Marcadores coloridos (azul = usuário, verde = sala selecionada, vermelho = outras salas)
+- Estilos personalizados do mapa
+- Animações com Framer Motion
+- Design consistente com o resto do portal
+- Gradientes e sombras modernas
+*/
+
+// 10. FUNCIONALIDADES AVANÇADAS
+/*
+- Detecção automática de geolocalização
+- Fallback para localização padrão
+- Cálculo de rotas em tempo real
+- Sincronização com o AuthContext
+- Responsividade completa
+- Acessibilidade (ARIA labels, keyboard navigation)
+*/
