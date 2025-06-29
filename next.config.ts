@@ -9,6 +9,14 @@ const nextConfig = {
   },
   // Importante para o Google Maps
   transpilePackages: ["@react-google-maps/api"],
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://localhost:8000/api/:path*",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
