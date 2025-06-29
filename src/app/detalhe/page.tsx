@@ -175,7 +175,7 @@ export default function DetalhesExameMelhorado() {
                 })
             } catch (shareError) {
                 // Se o compartilhamento for cancelado ou falhar, tentar copiar
-               console.log(shareError)
+                console.log(shareError)
                 await copiarParaAreaTransferencia(textoParaCompartilhar)
             }
         } else {

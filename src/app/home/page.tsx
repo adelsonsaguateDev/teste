@@ -123,10 +123,10 @@ export default function HomePage() {
                                         <p className="text-2xl font-bold text-yellow-300">{codigo}</p>
                                     </div>
                                     <div>
-                                        <p className="text-blue-200 text-sm">Status</p>
+                                        <p className="text-blue-200 text-sm">Estado</p>
                                         <div className="flex items-center gap-2">
                                             <CheckCircle className="w-5 h-5 text-green-400" />
-                                            <span className="font-semibold text-green-400">Ativo</span>
+                                            <span className="font-semibold text-green-400">Activo</span>
                                         </div>
                                     </div>
                                 </div>
