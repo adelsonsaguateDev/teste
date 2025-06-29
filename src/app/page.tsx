@@ -14,15 +14,56 @@ export default function LoginPage() {
   const { login } = useAuth()
   const router = useRouter()
 
+  // const handleSubmit = async () => {
+  //   if (!codigo.trim()) {
+  //     setError('Por favor, insira o seu código de candidato')
+  //     return
+  //   }
+
+  //   setError('')
+  //   setIsLoading(true)
+
+  //   try {
+  //     const response = await fetch("/api/v1/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Accept": "application/json"
+  //       },
+  //       body: JSON.stringify({
+  //         username: "asaguate",
+  //         password: "654321"
+  //       }),
+  //     })
+
+  //     if (!response.ok) {
+  //       throw new Error(`Erro ${response.status}: ${response.statusText}`)
+  //     }
+
+  //     const data = await response.json()
+  //     console.log(data)
+  //     console.log("Utilizador autenticado!")
+
+  //     // Se a autenticação for bem-sucedida
+  //     login(codigo)
+  //     router.push('/home')
+
+  //   } catch (error) {
+  //     console.error("Erro ao autenticar:", error)
+  //     setError('Erro ao conectar com o servidor. Tente novamente.')
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
+
+
   const handleSubmit = async () => {
     if (!codigo.trim()) {
       setError('Por favor, insira o seu código de candidato')
       return
     }
-
     setError('')
     setIsLoading(true)
-
     // Simulação de autenticação
     await new Promise(resolve => setTimeout(resolve, 1500))
 
@@ -32,7 +73,6 @@ export default function LoginPage() {
     } else {
       setError('Código inválido! Verifique o seu código e tente novamente.')
     }
-
     setIsLoading(false)
   }
 
