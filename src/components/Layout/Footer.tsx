@@ -27,7 +27,7 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className="font-semibold mb-4">Links Úteis</h4>
+                        <h4 className="font-semibold mb-4">Links Rápidos</h4>
                         <ul className="space-y-2 text-gray-400">
                             <li>
                                 <Link href="https://www.up.ac.mz" className="hover:text-white transition-colors">
