@@ -6,6 +6,8 @@ import L, { LatLngTuple } from 'leaflet'
 import { Search, MapPin, Navigation, Phone, MessageCircle, Info, Clock, User } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import LayoutInterno from '@/components/Layout/LayoutInterno'
+import Footer from '../Layout/Footer'
+
 
 const marcador = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
@@ -376,7 +378,9 @@ export default function MapaPesquisaDinamica() {
                         )}
                     </AnimatePresence>
                 </div>
+
             </div>
+            <Footer />
         </LayoutInterno>
     )
 }

@@ -23,6 +23,7 @@ import {
     Timer,
     Badge
 } from 'lucide-react'
+import Footer from '@/components/Layout/Footer'
 
 interface DadosCandidato {
     codigo: string
@@ -576,6 +577,8 @@ export default function DetalhesExameMelhorado() {
                     </div>
                 </div>
             </div>
+            <Footer />
+
         </LayoutInterno>
     )
 }
