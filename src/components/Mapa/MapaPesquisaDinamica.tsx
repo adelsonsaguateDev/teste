@@ -223,7 +223,7 @@ export default function MapaPesquisaDinamica() {
                                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <Navigation className="w-8 h-8 text-blue-600 animate-pulse" />
                                 </div>
-                                <p className="text-gray-600 text-lg">A obter localização atual...</p>
+                                <p className="text-gray-600 text-lg">A obter localização actual...</p>
                                 <p className="text-gray-500 text-sm mt-2">Certifica-te de que permitiste o acesso à localização</p>
                             </motion.div>
                         </div>
@@ -234,13 +234,13 @@ export default function MapaPesquisaDinamica() {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
 
-                            {/* Marcador da posição atual */}
+                            {/* Marcador da posição actual */}
                             <Marker position={posicao} icon={marcador}>
                                 <Popup>
                                     <div className="text-center p-2">
                                         <strong className="text-blue-600">📍 Tu estás aqui</strong>
                                         <br />
-                                        <small className="text-gray-600">Localização atual</small>
+                                        <small className="text-gray-600">Localização actual</small>
                                     </div>
                                 </Popup>
                             </Marker>
@@ -356,7 +356,7 @@ export default function MapaPesquisaDinamica() {
                                         <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                                         <div>
                                             <p className="font-medium text-gray-800">Marcador Azul</p>
-                                            <p className="text-gray-600">A tua localização atual</p>
+                                            <p className="text-gray-600">A tua localização actual</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
@@ -369,8 +369,8 @@ export default function MapaPesquisaDinamica() {
                                     <div className="flex items-start gap-3">
                                         <div className="w-8 h-1 bg-blue-500 opacity-60 mt-2" style={{ background: 'repeating-linear-gradient(to right, #3B82F6 0, #3B82F6 10px, transparent 10px, transparent 20px)' }}></div>
                                         <div>
-                                            <p className="font-medium text-gray-800">Linha Pontilhada</p>
-                                            <p className="text-gray-600">Direção até à sala</p>
+                                            <p className="font-medium text-gray-800">Linha Tracejada</p>
+                                            <p className="text-gray-600">Direcção até à sala</p>
                                         </div>
                                     </div>
                                 </div>
