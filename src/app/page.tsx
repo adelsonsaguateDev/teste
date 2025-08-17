@@ -55,6 +55,7 @@ export default function LoginPage() {
                 height={400}
                 alt="Logo da Universidade Pedagógica de Maputo"
                 className="w-full h-full object-contain"
+                unoptimized
               />
             </div>
           </div>
@@ -82,6 +83,7 @@ export default function LoginPage() {
                       height={400}
                       alt="Logo da Universidade Pedagógica de Maputo"
                       className="w-full h-full object-contain"
+                      unoptimized
                     />
                   </div>
                 </div>
