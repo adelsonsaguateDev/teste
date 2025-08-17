@@ -13,9 +13,18 @@ export default function LoginPage() {
   const { login } = useAuth()
   const router = useRouter()
 
+  const handleCodigoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    const numericValue = value.replace(/[^0-9]/g, '')
+    setCodigo(numericValue)
+    if (error) {
+      setError('')
+    }
+  }
+
   const handleSubmit = async () => {
-    if (!codigo.trim()) {
-      setError('Por favor, insira o seu código de candidato')
+    if (codigo.length < 5) {
+      setError('O código do candidato deve ter no mínimo 5 dígitos.')
       return
     }
     setError('')
@@ -68,7 +77,7 @@ export default function LoginPage() {
         </div>
 
         {/* --- Main Card --- */}
-        <div className="w-full max-w-md lg:max-w-5xl bg-white/98 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20">
+        <div className="w-full max-w-md lg:max-w-5xl bg-white/98 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden">
           <div className="flex lg:h-[85vh] lg:max-h-[650px]">
 
             {/* Painel esquerdo (Desktop-Only) */}
@@ -160,13 +169,25 @@ export default function LoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v-2H7v-2H4a1 1 0 01-1-1v-4a1 1 0 011-1h3l2.257-2.257A6 6 0 0121 9z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-3">
-                  Bem-vindo!
+                <h3 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
+                  Acesso ao Portal
                 </h3>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  Insira o seu código de candidato<br className="hidden lg:block" />
-                  para acessar as informações do exame
-                </p>
+                <div className="text-gray-700">
+                  <ul className="space-y-2 inline-block text-left text-sm">
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span>Use o seu <strong>código de candidato</strong>.</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span>O código tem no mínimo <strong>5 dígitos</strong>.</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -183,12 +204,11 @@ export default function LoginPage() {
                     </div>
                     <input
                       type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={codigo}
-                      onChange={(e) => {
-                        setCodigo(e.target.value.toUpperCase())
-                        setError('')
-                      }}
-                      placeholder="Ex: UP12345"
+                      onChange={handleCodigoChange}
+                      placeholder="Ex: 12345"
                       className={`w-full pl-12 pr-4 py-3 text-base border-2 rounded-xl shadow-sm focus:outline-none transition-all duration-300 text-gray-800 bg-white ${error
                         ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-500/20'
                         : 'border-gray-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20'
@@ -216,7 +236,7 @@ export default function LoginPage() {
                 {/* Botão de login */}
                 <button
                   onClick={handleSubmit}
-                  disabled={isLoading || !codigo.trim()}
+                  disabled={isLoading || codigo.length < 5}
                   className="w-full bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-base flex items-center justify-center space-x-3 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {isLoading ? (
