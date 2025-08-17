@@ -3,27 +3,42 @@
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 
+// --- TIPOS E CONSTANTES ---
+interface LoginResult {
+  success: boolean;
+  error?: string;
+}
+
 interface AuthContextProps {
-    isAuthenticated: boolean
-    login: (codigo: string) => void
-    logout: () => void
-    codigo: string
-    tempoSessao: number
-    resetarTempo: () => void
+  isAuthenticated: boolean;
+  login: (codigo: string) => Promise<LoginResult>;
+  logout: () => void;
+  codigo: string;
+  tempoSessao: number;
+  resetarTempo: () => void;
+  loginAttempts: number;
+  isBlocked: boolean;
+  blockUntil: number | null;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 const STORAGE_KEYS = {
-    IS_AUTHENTICATED: 'up_portal_authenticated',
-    CODIGO: 'up_portal_codigo',
-    SESSION_START: 'up_portal_session_start',
-    TEMPO_SESSAO: 'up_portal_tempo_sessao'
+  IS_AUTHENTICATED: 'up_portal_authenticated',
+  CODIGO: 'up_portal_codigo',
+  SESSION_START: 'up_portal_session_start',
+  TEMPO_SESSAO: 'up_portal_tempo_sessao',
+  LOGIN_ATTEMPTS: 'up_portal_login_attempts',
+  BLOCK_UNTIL: 'up_portal_block_until'
 }
 
 const TEMPO_SESSAO_INICIAL = 30 // 30 minutos
+const MAX_LOGIN_ATTEMPTS = parseInt(process.env.NEXT_PUBLIC_MAX_LOGIN_ATTEMPTS || '5');
+const BLOCK_DURATION_MINUTES = parseInt(process.env.NEXT_PUBLIC_BLOCK_DURATION_MINUTES || '5');
 
+// --- COMPONENTE PROVIDER ---
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    // ... (state for session)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [codigo, setCodigo] = useState('')
     const [tempoSessao, setTempoSessao] = useState(TEMPO_SESSAO_INICIAL)
@@ -32,7 +47,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const router = useRouter()
     const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-    // Função para salvar no localStorage
+    // State for login attempts
+    const [loginAttempts, setLoginAttempts] = useState(0);
+    const [blockUntil, setBlockUntil] = useState<number | null>(null);
+    const isBlocked = blockUntil ? Date.now() < blockUntil : false;
+
+    // --- FUNÇÕES DE SESSÃO (localStorage) ---
     const salvarSessao = useCallback((codigo: string, tempo: number) => {
         if (typeof window !== 'undefined') {
             localStorage.setItem(STORAGE_KEYS.IS_AUTHENTICATED, 'true')
@@ -42,19 +62,108 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [])
 
-    // Função para limpar localStorage
     const limparSessao = useCallback(() => {
         if (typeof window !== 'undefined') {
+            const keysToKeep = [STORAGE_KEYS.LOGIN_ATTEMPTS, STORAGE_KEYS.BLOCK_UNTIL];
             Object.values(STORAGE_KEYS).forEach(key => {
-                localStorage.removeItem(key)
+                if (!keysToKeep.includes(key)) {
+                    localStorage.removeItem(key)
+                }
             })
         }
     }, [])
 
-    // Função para carregar sessão do localStorage
+    // --- LÓGICA DE LOGIN E BLOQUEIO ---
+    const login = useCallback(async (codigoCandidato: string): Promise<LoginResult> => {
+        // 1. Verificar se está bloqueado
+        if (blockUntil && Date.now() < blockUntil) {
+            const tempoRestante = Math.ceil((blockUntil - Date.now()) / (1000 * 60));
+            return {
+                success: false,
+                error: `Muitas tentativas falhadas. Tente novamente em ${tempoRestante} minutos.`
+            };
+        } else if (blockUntil && Date.now() >= blockUntil) {
+            // Se o tempo de bloqueio passou, reseta
+            setBlockUntil(null);
+            setLoginAttempts(0);
+            localStorage.removeItem(STORAGE_KEYS.BLOCK_UNTIL);
+            localStorage.removeItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
+        }
+
+        // Simulação de chamada à API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // 2. Validar o código (lógica de negócio)
+        if (codigoCandidato === '12345') {
+            // Sucesso
+            setLoginAttempts(0);
+            localStorage.removeItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
+            setBlockUntil(null);
+            localStorage.removeItem(STORAGE_KEYS.BLOCK_UNTIL);
+
+            setCodigo(codigoCandidato)
+            setIsAuthenticated(true)
+            setTempoSessao(TEMPO_SESSAO_INICIAL)
+            salvarSessao(codigoCandidato, TEMPO_SESSAO_INICIAL)
+
+            return { success: true };
+        } else {
+            // Falha
+            const novasTentativas = loginAttempts + 1;
+            setLoginAttempts(novasTentativas);
+            localStorage.setItem(STORAGE_KEYS.LOGIN_ATTEMPTS, novasTentativas.toString());
+
+            if (novasTentativas >= MAX_LOGIN_ATTEMPTS) {
+                const novoBlockUntil = Date.now() + BLOCK_DURATION_MINUTES * 60 * 1000;
+                setBlockUntil(novoBlockUntil);
+                localStorage.setItem(STORAGE_KEYS.BLOCK_UNTIL, novoBlockUntil.toString());
+                return {
+                    success: false,
+                    error: `Código inválido. A sua conta foi bloqueada por ${BLOCK_DURATION_MINUTES} minutos.`
+                };
+            }
+
+            const tentativasRestantes = MAX_LOGIN_ATTEMPTS - novasTentativas;
+            return {
+                success: false,
+                error: `Código inválido! Restam ${tentativasRestantes} tentativas.`
+            };
+        }
+    }, [loginAttempts, blockUntil, salvarSessao]);
+
+
+    // --- INICIALIZAÇÃO E EFEITOS ---
+
+    // Efeito para auto-desbloqueio
+    useEffect(() => {
+      if (blockUntil && Date.now() < blockUntil) {
+        const remainingTime = blockUntil - Date.now();
+        const timer = setTimeout(() => {
+          setBlockUntil(null);
+          setLoginAttempts(0);
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem(STORAGE_KEYS.BLOCK_UNTIL);
+            localStorage.removeItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
+          }
+        }, remainingTime);
+
+        return () => clearTimeout(timer);
+      }
+    }, [blockUntil]);
+
+    // Função para carregar sessão e estado de bloqueio do localStorage
     const carregarSessao = useCallback(() => {
         if (typeof window !== 'undefined') {
             try {
+                // Carregar estado de bloqueio
+                const attempts = parseInt(localStorage.getItem(STORAGE_KEYS.LOGIN_ATTEMPTS) || '0');
+                const block = parseInt(localStorage.getItem(STORAGE_KEYS.BLOCK_UNTIL) || '0');
+                setLoginAttempts(attempts);
+                if (block && Date.now() < block) {
+                    setBlockUntil(block);
+                }
+
+                // Carregar sessão de autenticação
                 const isAuth = localStorage.getItem(STORAGE_KEYS.IS_AUTHENTICATED) === 'true'
                 const codigoSalvo = localStorage.getItem(STORAGE_KEYS.CODIGO)
                 const sessionStart = localStorage.getItem(STORAGE_KEYS.SESSION_START)
@@ -67,13 +176,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     const tempoRestante = parseInt(tempoSalvo) - tempoDecorrido
 
                     if (tempoRestante > 0) {
-                        // Sessão ainda válida
                         setIsAuthenticated(true)
                         setCodigo(codigoSalvo)
                         setTempoSessao(tempoRestante)
                         return true
                     } else {
-                        // Sessão expirada
                         limparSessao()
                         return false
                     }
@@ -86,13 +193,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false
     }, [limparSessao])
 
+    // ... (Restante dos useEffects e lógica de sessão - sem alterações) ...
     // Inicializar sessão ao carregar o componente
     useEffect(() => {
         const sessaoCarregada = carregarSessao()
         setIsInitialized(true)
 
         if (!sessaoCarregada && typeof window !== 'undefined') {
-            // Se não há sessão válida, redirecionar para login apenas se não estiver na página de login
             const currentPath = window.location.pathname
             if (currentPath !== '/' && currentPath !== '/login') {
                 router.push('/')
@@ -100,57 +207,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [carregarSessao, router])
 
-    // Função de logout que sempre redireciona
     const logout = useCallback(() => {
         setCodigo('')
         setIsAuthenticated(false)
         setTempoSessao(TEMPO_SESSAO_INICIAL)
         setShouldLogout(false)
-
-        // Limpar timer se existir
         if (timerRef.current) {
             clearInterval(timerRef.current)
             timerRef.current = null
         }
-
-        // Limpar localStorage
         limparSessao()
-
-        // Redirecionar para login usando setTimeout para evitar erro
         setTimeout(() => {
             router.push('/')
         }, 0)
     }, [router, limparSessao])
 
-    // Função para resetar o tempo da sessão
     const resetarTempo = useCallback(() => {
         const novoTempo = TEMPO_SESSAO_INICIAL
         setTempoSessao(novoTempo)
-
-        // Atualizar localStorage
         if (isAuthenticated && codigo) {
             salvarSessao(codigo, novoTempo)
         }
     }, [isAuthenticated, codigo, salvarSessao])
 
-    const login = useCallback((codigoCandidato: string) => {
-        setCodigo(codigoCandidato)
-        setIsAuthenticated(true)
-        setTempoSessao(TEMPO_SESSAO_INICIAL)
-        setShouldLogout(false)
-
-        // Salvar no localStorage
-        salvarSessao(codigoCandidato, TEMPO_SESSAO_INICIAL)
-    }, [salvarSessao])
-
-    // Efeito separado para lidar com logout automático
     useEffect(() => {
         if (shouldLogout) {
             logout()
         }
     }, [shouldLogout, logout])
 
-    // Timer da sessão - só roda quando autenticado e inicializado
     useEffect(() => {
         if (!isAuthenticated || !isInitialized) {
             if (timerRef.current) {
@@ -163,21 +248,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         timerRef.current = setInterval(() => {
             setTempoSessao(prev => {
                 const novoTempo = prev - 1
-
-                // Atualizar localStorage com o novo tempo
                 if (codigo) {
                     salvarSessao(codigo, novoTempo)
                 }
-
                 if (novoTempo <= 0) {
-                    // Tempo esgotado - marcar para logout
                     setShouldLogout(true)
                     return 0
                 }
-
                 return novoTempo
             })
-        }, 60000) // A cada minuto
+        }, 60000)
 
         return () => {
             if (timerRef.current) {
@@ -187,28 +267,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [isAuthenticated, isInitialized, codigo, salvarSessao])
 
-    // Detectar atividade do usuário para resetar timer
     useEffect(() => {
         if (!isAuthenticated || !isInitialized) return
 
         const resetarNaAtividade = () => {
             const novoTempo = TEMPO_SESSAO_INICIAL
             setTempoSessao(novoTempo)
-
-            // Atualizar localStorage
             if (codigo) {
                 salvarSessao(codigo, novoTempo)
             }
         }
 
-        // Eventos que indicam atividade do usuário
         const eventos = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click']
-
-        // Throttle para não resetar muito frequentemente
         let lastReset = 0
         const throttledReset = () => {
             const now = Date.now()
-            if (now - lastReset > 30000) { // Reset no máximo a cada 30 segundos
+            if (now - lastReset > 30000) {
                 lastReset = now
                 resetarNaAtividade()
             }
@@ -225,13 +299,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [isAuthenticated, isInitialized, codigo, salvarSessao])
 
-    // Listener para mudanças de localStorage (para sincronizar entre abas)
     useEffect(() => {
         if (typeof window === 'undefined') return
 
         const handleStorageChange = (e: StorageEvent) => {
             if (e.key === STORAGE_KEYS.IS_AUTHENTICATED && e.newValue === null) {
-                // Logout feito em outra aba
                 logout()
             }
         }
@@ -240,7 +312,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return () => window.removeEventListener('storage', handleStorageChange)
     }, [logout])
 
-    // Não renderizar até estar inicializado
     if (!isInitialized) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -259,7 +330,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             logout,
             codigo,
             tempoSessao,
-            resetarTempo
+            resetarTempo,
+            loginAttempts,
+            isBlocked,
+            blockUntil
         }}>
             {children}
         </AuthContext.Provider>
