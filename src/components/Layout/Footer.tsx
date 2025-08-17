@@ -35,7 +35,7 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/regulamentos" className="hover:text-white transition-colors">
+                                <Link href="https://www.up.ac.mz/regulamento-academico?highlight=WyJyZWd1bGFyIiwicmVndWxhbWVudG8iLCJyZWd1bGFtZW50b3MiLCJyZWd1bGFkb3IiLCJyZWd1bGFtIiwicmVndWxhcmVzIl0=" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                                     Regulamentos
                                 </Link>
                             </li>
@@ -76,8 +76,17 @@ const Footer = () => {
                         © 2025 Universidade Pedagógica de Maputo. Todos os direitos reservados.
                     </p>
                     <p className="text-sm">
-                        Desenvolvido por <span className="text-white font-medium">Eng. Adelson Saguate</span>
-                        • Versão 1.0.0
+                        Desenvolvido por{' '}
+                        <a
+                            href="https://adelsonsaguatedev.github.io/adelsonsaguate/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white font-medium hover:underline"
+                        >
+                            Eng. Adelson Saguate
+                        </a>
+                        {' • '}
+                        Versão 1.0.0
                     </p>
                 </div>
             </div>

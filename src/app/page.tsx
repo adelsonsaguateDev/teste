@@ -309,7 +309,15 @@ export default function LoginPage() {
             © 2025 Universidade Pedagógica de Maputo - Portal do Candidato
           </p>
           <p className="text-xs text-white/70 mt-1">
-            Desenvolvido por Eng. Adelson Saguate
+            Desenvolvido por{' '}
+            <a
+              href="https://adelsonsaguatedev.github.io/adelsonsaguate/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-white hover:underline"
+            >
+              Eng. Adelson Saguate
+            </a>
           </p>
         </div>
       </div>
