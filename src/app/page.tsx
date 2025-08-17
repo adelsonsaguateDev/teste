@@ -5,7 +5,6 @@ import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
-
 export default function LoginPage() {
   const [codigo, setCodigo] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -34,7 +33,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 flex items-center justify-center p-3 sm:p-4 md:p-6 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden">
       {/* Elementos decorativos de fundo */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-32 -right-32 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl" />
@@ -44,15 +43,37 @@ export default function LoginPage() {
       </div>
 
       {/* Conteúdo principal */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto">
-        <div className="bg-white/98 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20">
-          <div className="flex flex-col lg:flex-row lg:h-[85vh] lg:max-h-[650px]">
+      <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center">
 
-            {/* Painel esquerdo - Informações da UP */}
-            <div className="lg:w-3/5 bg-gradient-to-br from-blue-700 to-blue-900 p-6 lg:p-8 text-white flex flex-col justify-center relative">
+        {/* --- Mobile-Only Header --- */}
+        <div className="lg:hidden text-center text-white mb-6">
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-20 h-20 bg-white rounded-full p-2 shadow-lg border-2 border-yellow-300/20">
+              <Image
+                src="/logo_up.png"
+                width={400}
+                height={400}
+                alt="Logo da Universidade Pedagógica de Maputo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          <h1 className="text-2xl font-bold leading-tight">
+            Portal do <span className="text-yellow-300 drop-shadow-sm">Candidato</span>
+          </h1>
+          <p className="text-lg text-white/80 mt-1">
+            Universidade Pedagógica de Maputo
+          </p>
+        </div>
+
+        {/* --- Main Card --- */}
+        <div className="w-full max-w-md lg:max-w-5xl bg-white/98 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20">
+          <div className="flex lg:h-[85vh] lg:max-h-[650px]">
+
+            {/* Painel esquerdo (Desktop-Only) */}
+            <div className="hidden lg:flex lg:w-3/5 bg-gradient-to-br from-blue-700 to-blue-900 p-6 lg:p-8 text-white flex-col justify-center relative">
               <div className="absolute inset-0 bg-black/5" />
               <div className="relative z-10">
-                {/* Logo da UP */}
                 <div className="flex items-center justify-center mb-6">
                   <div className="w-24 h-24 bg-white rounded-full p-2 shadow-2xl border-4 border-yellow-300/20">
                     <Image
@@ -64,21 +85,16 @@ export default function LoginPage() {
                     />
                   </div>
                 </div>
-                {/* Título principal */}
                 <h1 className="text-3xl lg:text-4xl font-bold leading-tight mb-4 text-center">
-                  Portal do<br />
+                  Portal do{' '}
                   <span className="text-yellow-300 drop-shadow-sm">Candidato</span>
                 </h1>
-
-                {/* Subtítulo */}
-                <h2 className="text-xl lg:text-2xl text-blue-100 mb-1 font-semibold text-center">
+                <h2 className="text-xl lg:text-2xl text-white/90 mb-1 font-semibold text-center">
                   Universidade Pedagógica
                 </h2>
-                <p className="text-lg text-blue-200 mb-8 font-medium text-center">
+                <p className="text-lg text-white/70 mb-8 font-medium text-center">
                   de Maputo
                 </p>
-
-                {/* Lista de funcionalidades */}
                 <div className="space-y-3">
                   {[
                     {
@@ -119,12 +135,10 @@ export default function LoginPage() {
                       <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-blue-900 shadow-lg">
                         {item.icon}
                       </div>
-                      <span className="text-sm text-blue-50">{item.text}</span>
+                      <span className="text-sm text-white/90">{item.text}</span>
                     </div>
                   ))}
                 </div>
-
-                {/* Lema da UP */}
                 <div className="mt-6 text-center">
                   <p className="text-yellow-300 font-semibold italic text-base">
                     &ldquo;Osomiha, Kupisakira, Kutirhela&rdquo;
@@ -137,19 +151,18 @@ export default function LoginPage() {
             </div>
 
             {/* Painel direito - Formulário de Login */}
-            <div className="lg:w-2/5 p-6 lg:p-8 flex flex-col justify-center bg-gradient-to-b from-gray-50 to-white">
+            <div className="w-full lg:w-2/5 p-6 lg:p-8 flex flex-col justify-center bg-gradient-to-b from-gray-50 to-white">
               <div className="text-center mb-8">
-                <div className="w-12 h-12 bg-blue-700 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <div className="w-12 h-12 bg-blue-700 rounded-xl items-center justify-center mx-auto mb-4 shadow-lg hidden lg:flex">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v-2H7v-2H4a1 1 0 01-1-1v-4a1 1 0 011-1h3l2.257-2.257A6 6 0 0121 9z" />
                   </svg>
                 </div>
-
                 <h3 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-3">
                   Bem-vindo!
                 </h3>
                 <p className="text-gray-600 text-base leading-relaxed">
-                  Insira o seu código de candidato<br />
+                  Insira o seu código de candidato<br className="hidden lg:block" />
                   para acessar as informações do exame
                 </p>
               </div>
@@ -161,6 +174,11 @@ export default function LoginPage() {
                     Código do Candidato
                   </label>
                   <div className="relative">
+                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" strokeWidth="1.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                      </svg>
+                    </div>
                     <input
                       type="text"
                       value={codigo}
@@ -169,7 +187,7 @@ export default function LoginPage() {
                         setError('')
                       }}
                       placeholder="Ex: UP12345"
-                      className={`w-full px-4 py-3 text-base border-2 rounded-xl shadow-sm focus:outline-none transition-all duration-300 text-gray-800 bg-white ${error
+                      className={`w-full pl-12 pr-4 py-3 text-base border-2 rounded-xl shadow-sm focus:outline-none transition-all duration-300 text-gray-800 bg-white ${error
                         ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-500/20'
                         : 'border-gray-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20'
                         }`}
