@@ -34,7 +34,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 flex items-center justify-center p-3 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 flex items-center justify-center p-3 sm:p-4 md:p-6 relative overflow-hidden">
       {/* Elementos decorativos de fundo */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-32 -right-32 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl" />
@@ -46,7 +46,7 @@ export default function LoginPage() {
       {/* Conteúdo principal */}
       <div className="relative z-10 w-full max-w-5xl mx-auto">
         <div className="bg-white/98 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20">
-          <div className="flex flex-col lg:flex-row h-[85vh] max-h-[650px]">
+          <div className="flex flex-col lg:flex-row lg:h-[85vh] lg:max-h-[650px]">
 
             {/* Painel esquerdo - Informações da UP */}
             <div className="lg:w-3/5 bg-gradient-to-br from-blue-700 to-blue-900 p-6 lg:p-8 text-white flex flex-col justify-center relative">
