@@ -1,11 +1,11 @@
 'use client'
 
 import { useJsApiLoader, GoogleMap, MarkerF, DirectionsRenderer } from '@react-google-maps/api';
-import { useCallback, useState, useEffect } from 'react';
-import { Search, MapPin, Navigation, Phone, MessageCircle, Info, Clock, User } from 'lucide-react';
+import {  useState, useEffect } from 'react';
+import { Search, MapPin, Navigation, Phone, MessageCircle, Info, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LayoutInterno from '@/components/Layout/LayoutInterno';
-import Footer from '../Layout/Footer';
+
 
 // --- TIPOS E DADOS MOCK ---
 type SalaExame = {
@@ -21,7 +21,7 @@ const salasExame: SalaExame[] = [
   {
     codigoCandidato: '12345',
     nome: 'Sala A1',
-    pos: { lat: -25.9658, lng: 32.5834 },
+    pos: { lat: -25.9435212531231, lng: 32.54335458023248 },
     bloco: 'Bloco A',
     horario: '08:00 - 11:00',
     disciplina: 'Matemática'
@@ -38,12 +38,19 @@ const salasExame: SalaExame[] = [
 
 // --- ESTILOS E CONFIGURAÇÕES DO MAPA ---
 const containerStyle = { width: '100%', height: '100%' };
-const mapOptions = { streetViewControl: false, mapTypeControl: false, fullscreenControl: false, zoomControl: true };
+const DEFAULT_MAP_TYPE = 'hybrid'; // Pode ser 'roadmap', 'satellite', 'hybrid' ou 'terrain'
+const mapOptions = {
+  streetViewControl: true,
+  mapTypeControl: true,
+  fullscreenControl: true,
+  zoomControl: true,
+  mapTypeId: DEFAULT_MAP_TYPE,
+};
 
 // --- COMPONENTE PRINCIPAL ---
 export default function MapaGoogleMaps() {
   // --- STATE MANAGEMENT ---
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+
   const [userPosition, setUserPosition] = useState<google.maps.LatLngLiteral | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(true);
   const [pesquisa, setPesquisa] = useState('');
@@ -178,14 +185,14 @@ export default function MapaGoogleMaps() {
 
         <div className="flex-1 relative">
           {renderMap()}
-          <div className="absolute bottom-6 right-6 space-y-3 z-[1000]">
+          <div className="absolute bottom-6 left-6 space-y-3 z-[1000]">
             <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setMostrarInfos(!mostrarInfos)} className="w-14 h-14 bg-white hover:bg-gray-50 text-blue-600 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 border border-gray-200"><Info className="w-6 h-6" /></motion.button>
             <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} href="https://wa.me/258840000000" target="_blank" rel="noopener noreferrer" className="w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200"><MessageCircle className="w-6 h-6" /></motion.a>
             <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} href="tel:+258840000000" className="w-14 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200"><Phone className="w-6 h-6" /></motion.a>
           </div>
           <AnimatePresence>
             {mostrarInfos && (
-              <motion.div initial={{ opacity: 0, x: 300 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 300 }} className="absolute top-4 right-4 bg-white rounded-2xl shadow-xl p-6 z-[1000] max-w-sm border border-gray-200">
+              <motion.div initial={{ opacity: 0, x: -300 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -300 }} className="absolute top-4 left-4 bg-white rounded-2xl shadow-xl p-6 z-[1000] max-w-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800">Legenda do Mapa</h3>
                   <button onClick={() => setMostrarInfos(false)} className="text-gray-400 hover:text-gray-600">✕</button>
@@ -200,7 +207,7 @@ export default function MapaGoogleMaps() {
           </AnimatePresence>
         </div>
       </div>
-      <Footer />
+     
     </LayoutInterno>
   )
 }
