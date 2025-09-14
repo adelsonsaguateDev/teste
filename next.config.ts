@@ -1,13 +1,27 @@
-/** @type {import('next').NextConfig} */
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === "development",
+  buildExcludes: [/app-build-manifest\.json$/],
+})
+
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
-      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
   images: {
-    domains: ["maps.googleapis.com", "maps.gstatic.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "maps.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "maps.gstatic.com",
+      },
+    ],
   },
-  // Importante para o Google Maps
   transpilePackages: ["@react-google-maps/api"],
   async rewrites() {
     return [
@@ -15,8 +29,8 @@ const nextConfig = {
         source: "/api/:path*",
         destination: "http://localhost:8000/api/:path*",
       },
-    ];
+    ]
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig)

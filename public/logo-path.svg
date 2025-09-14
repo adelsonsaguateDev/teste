@@ -1,0 +1,45 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1"/>
+      <stop offset="100%" style="stop-color:#3B82F6"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Fundo -->
+  <rect width="512" height="512" rx="100" fill="url(#pathGrad)"/>
+  
+  <!-- Caminho pontilhado (rota) -->
+  <g>
+    <circle cx="150" cy="360" r="8" fill="white" opacity="0.6"/>
+    <circle cx="190" cy="340" r="8" fill="white" opacity="0.7"/>
+    <circle cx="230" cy="320" r="8" fill="white" opacity="0.8"/>
+    <circle cx="270" cy="300" r="8" fill="white" opacity="0.9"/>
+    <circle cx="310" cy="280" r="8" fill="white"/>
+  </g>
+  
+  <!-- Ponto de partida (candidato) -->
+  <g transform="translate(120, 380)">
+    <circle cx="0" cy="0" r="30" fill="white"/>
+    <circle cx="0" cy="-10" r="10" fill="#6366F1"/>
+    <path d="M -15 5 L 15 5 L 10 20 L -10 20 Z" fill="#6366F1"/>
+  </g>
+  
+  <!-- Destino (sala de exame) -->
+  <g transform="translate(350, 250)">
+    <rect x="-40" y="-40" width="80" height="80" fill="white" rx="10"/>
+    <rect x="-30" y="-30" width="60" height="50" fill="#6366F1" opacity="0.3"/>
+    <rect x="-20" y="-20" width="15" height="20" fill="#6366F1"/>
+    <rect x="5" y="-20" width="15" height="20" fill="#6366F1"/>
+    <text x="0" y="50" text-anchor="middle" fill="#6366F1" font-size="24" font-weight="bold">SALA</text>
+  </g>
+  
+  <!-- Pin de chegada -->
+  <g transform="translate(350, 180)">
+    <path d="M 0 0 C -20 0 -35 15 -35 35 C -35 55 0 80 0 80 S 35 55 35 35 C 35 15 20 0 0 0 Z" 
+          fill="#10B981" stroke="white" stroke-width="3"/>
+    <circle cx="0" cy="35" r="12" fill="white"/>
+    <text x="0" y="41" text-anchor="middle" fill="#10B981" font-size="18" font-weight="bold">✓</text>
+  </g>
+</svg>

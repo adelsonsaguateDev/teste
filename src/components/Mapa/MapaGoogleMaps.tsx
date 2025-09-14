@@ -2,7 +2,7 @@
 
 import { useJsApiLoader, GoogleMap, MarkerF, DirectionsRenderer, InfoWindowF } from '@react-google-maps/api';
 import { useState, useEffect, useCallback } from 'react';
-import { Search, MapPin, Navigation, Phone, MessageCircle, Info, Clock } from 'lucide-react';
+import { Search, Navigation, Phone, MessageCircle, Info, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LayoutInterno from '@/components/Layout/LayoutInterno';
 
