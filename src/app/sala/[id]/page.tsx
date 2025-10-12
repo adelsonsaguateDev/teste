@@ -13,7 +13,7 @@ interface Sala {
   Andar: string;
   Em_Uso: string;
   latitude: number;
-  longitute: number;
+  longitude: number;
   caminho_ficheiro: string;
   imagens: {
     id: number;
@@ -35,7 +35,13 @@ export default function DetalhesSalaPage({ params }: { params: Promise<{ id: str
     const buscarSala = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/salas/${id}`);
+        const response = await fetch(`/api/salas/${id}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        });
         const data = await response.json();
 
         if (data.success) {
@@ -150,7 +156,7 @@ export default function DetalhesSalaPage({ params }: { params: Promise<{ id: str
               <div>
                 <p className="text-sm text-gray-600 mb-1">Localização</p>
                 <p className="text-lg font-semibold text-gray-900">
-                  {sala.latitude.toFixed(4)}, {sala.longitute.toFixed(4)}
+                  {sala.latitude}, {sala.longitude}
                 </p>
               </div>
             </div>
@@ -173,7 +179,7 @@ export default function DetalhesSalaPage({ params }: { params: Promise<{ id: str
         </div>
 
         {/* Botão para ver no mapa */}
-        {sala.latitude !== 0 && sala.longitute !== 0 && (
+        {sala.latitude !== 0 && sala.longitude !== 0 && (
           <div className="mt-8 text-center">
             <button
               onClick={() => router.push(`/mapa?salaId=${sala.id}`)}

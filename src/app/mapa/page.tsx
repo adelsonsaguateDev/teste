@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic'
 
-const MapaGoogleMaps = dynamic(() => import('@/components/Mapa/MapaGoogleMaps'), {
+const MapaGoogleMapsAPI = dynamic(() => import('@/components/Mapa/MapaGoogleMapsAPI'), {
   ssr: false,
   loading: () => (
     <div className="h-screen w-full flex items-center justify-center bg-gray-100">
@@ -15,6 +15,6 @@ const MapaGoogleMaps = dynamic(() => import('@/components/Mapa/MapaGoogleMaps'),
 
 export default function PaginaMapa() {
   return (
-    <MapaGoogleMaps />
+    <MapaGoogleMapsAPI />
   )
 }
