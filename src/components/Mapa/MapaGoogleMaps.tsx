@@ -2,13 +2,15 @@
 
 import { useJsApiLoader, GoogleMap, MarkerF, DirectionsRenderer, InfoWindowF } from '@react-google-maps/api';
 import { useState, useEffect, useCallback } from 'react';
-import { Search, Navigation, Phone, MessageCircle, Info, Clock } from 'lucide-react';
+import { Search, Navigation, Phone, MessageCircle, Info, Clock, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import LayoutInterno from '@/components/Layout/LayoutInterno';
 
 
 // --- TIPOS E DADOS MOCK ---
 type SalaExame = {
+  id?: number;
   codigoCandidato: string;
   nome: string;
   pos: google.maps.LatLngLiteral;
@@ -19,6 +21,7 @@ type SalaExame = {
 
 const salasExame: SalaExame[] = [
   {
+    id: 1,
     codigoCandidato: '12345',
     nome: 'Sala A1',
     pos: { lat: -25.9435212531231, lng: 32.54335458023248 },
@@ -27,6 +30,7 @@ const salasExame: SalaExame[] = [
     disciplina: 'Matemática'
   },
   {
+    id: 2,
     codigoCandidato: '67890',
     nome: 'Sala B2',
     pos: { lat: -25.9663, lng: 32.5821 },
@@ -180,10 +184,19 @@ export default function MapaGoogleMaps() {
                     <span className="text-blue-800 font-medium">{salaEncontrada.horario}</span>
                   </div>
                   {duration && distance && (
-                    <div className="flex items-center gap-2 text-sm bg-orange-50 px-3 py-1 rounded-lg">
+                    <div className="flex items-center gap-2 text-sm bg-orange-50 px-3 py-1 rounded-lg mb-2">
                       <Navigation className="w-4 h-4 text-orange-600" />
                       <span className="text-orange-800 font-medium">{duration} ({distance})</span>
                     </div>
+                  )}
+                  {salaEncontrada.id && (
+                    <Link
+                      href={`/sala/${salaEncontrada.id}`}
+                      className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mt-2 text-sm font-semibold"
+                    >
+                      <Eye className="w-4 h-4" />
+                      Ver detalhes e fotos
+                    </Link>
                   )}
                 </div>
               </InfoWindowF>

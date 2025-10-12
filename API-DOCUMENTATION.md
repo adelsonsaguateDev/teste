@@ -43,6 +43,9 @@ src/
 Edite o arquivo `.env.local` na raiz do projeto com as credenciais do seu MySQL:
 
 ```env
+# URL base do portal gestor Laravel para acesso a imagens
+NEXT_PUBLIC_STORAGE_URL=http://127.0.0.1:8000/storage
+
 # Configurações do Banco de Dados MySQL
 DB_HOST=localhost
 DB_PORT=3306
@@ -53,6 +56,7 @@ DB_DATABASE=nome_do_banco_laravel
 
 ⚠️ **IMPORTANTE:**
 - Use as **mesmas credenciais** do seu projeto Laravel
+- Configure `NEXT_PUBLIC_STORAGE_URL` com a URL do portal gestor Laravel
 - O arquivo `.env.local` não é commitado no git por segurança
 
 ---

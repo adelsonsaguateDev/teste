@@ -20,6 +20,16 @@ const nextConfig = {
         protocol: "https",
         hostname: "maps.gstatic.com",
       },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+      },
     ],
   },
   transpilePackages: ["@react-google-maps/api"],
