@@ -313,7 +313,7 @@ export default function MapaGoogleMapsAPI() {
               value={pesquisa}
               onChange={(e) => setPesquisa(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="flex-1 px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="flex-1 px-4 py-3 text-lg text-black border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             />
             <button
               onClick={procurarSala}
