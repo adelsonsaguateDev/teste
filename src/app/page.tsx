@@ -95,7 +95,7 @@ export default function LoginPage() {
             Portal do <span className="text-yellow-300 drop-shadow-sm">Candidato</span>
           </h1>
           <p className="text-lg text-white/80 mt-1">
-            Universidade Pedagógica de Maputo
+            UP-Maputo
           </p>
         </div>
         <div className="w-full max-w-md lg:max-w-5xl bg-white/98 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden">
@@ -120,11 +120,8 @@ export default function LoginPage() {
                   <span className="text-yellow-300 drop-shadow-sm">Candidato</span>
                 </h1>
                 <h2 className="text-xl lg:text-2xl text-white/90 mb-1 font-semibold text-center">
-                  Universidade Pedagógica
+                  UP-Maputo
                 </h2>
-                <p className="text-lg text-white/70 mb-8 font-medium text-center">
-                  de Maputo
-                </p>
                 <div className="space-y-3">
                   {[
                     {
@@ -306,7 +303,7 @@ export default function LoginPage() {
         </div>
         <div className="text-center mt-4 text-white/90">
           <p className="text-xs font-medium">
-            © 2025 Universidade Pedagógica de Maputo - Portal do Candidato
+            © 2025 UP-Maputo - Portal do Candidato
           </p>
           <p className="text-xs text-white/70 mt-1">
             Desenvolvido por{' '}
