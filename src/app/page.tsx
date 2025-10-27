@@ -139,7 +139,7 @@ export default function LoginPage() {
                           <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 102 0V3h4v1a1 1 0 102 0V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 3a1 1 0 100 2h2a1 1 0 100-2H7z" clipRule="evenodd" />
                         </svg>
                       ),
-                      text: "Informações detalhadas do exame"
+                      text: "Dicas importantes  sobre o exame"
                     },
                     {
                       icon: (

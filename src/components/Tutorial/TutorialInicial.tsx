@@ -89,32 +89,6 @@ const passos = [
     )
   },
   {
-    id: 'detalhes',
-    titulo: 'Informações Completas do Exame',
-    descricao: 'Horários, documentos necessários, regras importantes e tudo que precisas saber para o dia do exame.',
-    icon: FileText,
-    cor: 'from-orange-500 to-orange-600',
-    dica: 'Guarda bem o teu código de candidato. Vais precisar dele no dia do exame!',
-    visual: (
-      <div className="space-y-2">
-        <div className="bg-yellow-50 border border-yellow-200 p-2 rounded-lg">
-          <div className="flex items-center gap-2 mb-1">
-            <Clock className="w-3 h-3 text-orange-600" />
-            <span className="text-xs font-medium text-orange-800">Horário</span>
-          </div>
-          <p className="text-xs text-orange-700">8:00 - 12:00</p>
-        </div>
-        <div className="bg-blue-50 border border-blue-200 p-2 rounded-lg">
-          <div className="flex items-center gap-2 mb-1">
-            <FileText className="w-3 h-3 text-blue-600" />
-            <span className="text-xs font-medium text-blue-800">Documentos</span>
-          </div>
-          <p className="text-xs text-blue-700">BI ou Passaporte</p>
-        </div>
-      </div>
-    )
-  },
-  {
     id: 'seguranca',
     titulo: 'Segurança e Sessão Temporizada',
     descricao: 'A tua sessão é segura e tem tempo limitado. Ficas sempre informado sobre o tempo restante.',
