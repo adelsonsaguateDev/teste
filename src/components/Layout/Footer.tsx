@@ -73,7 +73,7 @@ const Footer = () => {
 
                 <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
                     <p className="mb-2">
-                        © 2025 Universidade Pedagógica de Maputo. Todos os direitos reservados.
+                        © 2025 UP-Maputo. Todos os direitos reservados.
                     </p>
                     <p className="text-sm">
                         Desenvolvido por{' '}

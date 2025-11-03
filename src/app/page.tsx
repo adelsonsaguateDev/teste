@@ -303,7 +303,7 @@ export default function LoginPage() {
         </div>
         <div className="text-center mt-4 text-white/90">
           <p className="text-xs font-medium">
-            © 2025 UP-Maputo - Portal do Candidato
+            © 2025 UP-Maputo - Todos os direitos reservados
           </p>
           <p className="text-xs text-white/70 mt-1">
             Desenvolvido por{' '}
