@@ -303,44 +303,44 @@ export default function MapaGoogleMapsAPI() {
 
   return (
     <LayoutInterno>
-      <div className="h-screen flex flex-col">
+      <div className="h-[calc(100vh-4rem)] w-full flex flex-col overflow-hidden">
         {/* Barra de pesquisa */}
-        <div className="bg-white shadow-md p-4 z-10">
-          <div className="flex gap-3 max-w-2xl mx-auto">
+        <div className="bg-white shadow-md p-3 sm:p-4 z-10 flex-shrink-0">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 max-w-2xl mx-auto px-2 sm:px-0">
             <input
               type="text"
               placeholder="Digite o número da sala (ex: A101, B202...)"
               value={pesquisa}
               onChange={(e) => setPesquisa(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="flex-1 px-4 py-3 text-lg text-black border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg text-black border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 w-full"
             />
             <button
               onClick={procurarSala}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 font-semibold"
+              className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-semibold w-full sm:w-auto"
             >
               <Search size={20} />
-              Pesquisar
+              <span className="sm:inline">Pesquisar</span>
             </button>
           </div>
 
           {/* Informações */}
-          <div className="mt-3 flex items-center justify-center gap-6 text-sm text-gray-600">
+          <div className="mt-2 sm:mt-3 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600 px-2">
             <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-blue-600" />
+              <MapPin size={14} className="text-blue-600" />
               <span>{salas.length} salas no mapa</span>
             </div>
             {salaPesquisada && (
               <div className="flex items-center gap-2 text-orange-600 font-semibold">
-                <Navigation size={16} />
-                <span>Rota para: Sala {salaPesquisada.No_Sala}</span>
+                <Navigation size={14} />
+                <span className="text-xs sm:text-sm">Rota para: Sala {salaPesquisada.No_Sala}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Mapa */}
-        <div className="flex-1">{renderMap()}</div>
+        <div className="flex-1 w-full overflow-hidden">{renderMap()}</div>
       </div>
     </LayoutInterno>
   );
