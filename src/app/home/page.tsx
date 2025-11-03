@@ -194,7 +194,7 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        {/* Detalhes do Exame */}
+                        {/* Informações Importantes */}
                         <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
                             <div className="h-2 bg-gradient-to-r from-green-500 to-green-600"></div>
                             <div className="p-8">
@@ -202,18 +202,18 @@ export default function HomePage() {
                                     <FileText className="w-8 h-8 text-green-600" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                                    Detalhes do Exame
+                                    Informações Importantes
                                 </h3>
                                 <p className="text-gray-600 mb-6 leading-relaxed">
-                                    Consulte horários, disciplinas, documentos necessários
-                                    e outras informações importantes.
+                                    Aceda às regras do exame, documentos necessários,
+                                    material permitido e instruções essenciais.
                                 </p>
                                 <button
                                     onClick={() => navegarPara('/detalhe')}
                                     className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
-                                    aria-label="Ver detalhes do exame"
+                                    aria-label="Ver informações importantes do exame"
                                 >
-                                    <span>Ver Detalhes</span>
+                                    <span>Ver Informações</span>
                                     <ChevronRight className="w-5 h-5" />
                                 </button>
                             </div>
@@ -245,43 +245,32 @@ export default function HomePage() {
                         </div>
                     </div>
 
-                    {/* Avisos e Informações Importantes */}
-                    <div className="grid md:grid-cols-2 gap-8 mb-16">
-                        {/* Avisos importantes */}
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
-                            <div className="flex items-start gap-4">
-                                <AlertTriangle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
-                                <div>
-                                    <h4 className="text-lg font-semibold text-yellow-800 mb-3">
-                                        Informações Importantes
-                                    </h4>
-                                    <ul className="space-y-2 text-yellow-700 text-sm">
-                                        <li>• Chegue com 30 minutos de antecedência</li>
-                                        <li>• Traga documento de identificação válido</li>
-                                        <li>• Verifique os materiais permitidos</li>
-                                        <li>• Mantenha este código seguro: <strong>{codigo}</strong></li>
-                                    </ul>
-                                </div>
+                    {/* Contatos de suporte */}
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-8 mb-16">
+                        <div className="max-w-3xl mx-auto">
+                            <div className="text-center mb-6">
+                                <h4 className="text-2xl font-bold text-blue-900 mb-2">
+                                    Precisa de Ajuda?
+                                </h4>
+                                <p className="text-blue-700">
+                                    Nossa equipa está disponível para o apoiar
+                                </p>
                             </div>
-                        </div>
-
-                        {/* Contatos de suporte */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                            <h4 className="text-lg font-semibold text-blue-800 mb-4">
-                                Precisa de Ajuda?
-                            </h4>
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3">
-                                    <Phone className="w-5 h-5 text-blue-600" />
-                                    <span className="text-blue-700">+258 21 401 000</span>
+                            <div className="grid sm:grid-cols-3 gap-6">
+                                <div className="bg-white rounded-xl p-5 shadow-sm text-center">
+                                    <Phone className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                                    <p className="text-sm text-gray-600 mb-1">Telefone</p>
+                                    <p className="font-semibold text-gray-800">+258 21 401 000</p>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <Mail className="w-5 h-5 text-blue-600" />
-                                    <span className="text-blue-700">candidatos@up.ac.mz</span>
+                                <div className="bg-white rounded-xl p-5 shadow-sm text-center">
+                                    <Mail className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                                    <p className="text-sm text-gray-600 mb-1">Email</p>
+                                    <p className="font-semibold text-gray-800">candidatos@up.ac.mz</p>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <Clock className="w-5 h-5 text-blue-600" />
-                                    <span className="text-blue-700">Seg-Sex: 8h00-17h00</span>
+                                <div className="bg-white rounded-xl p-5 shadow-sm text-center">
+                                    <Clock className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                                    <p className="text-sm text-gray-600 mb-1">Horário</p>
+                                    <p className="font-semibold text-gray-800">Seg-Sex: 8h-17h</p>
                                 </div>
                             </div>
                         </div>
